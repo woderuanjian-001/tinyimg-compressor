@@ -1,36 +1,36 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- SEO -->
-    <title>在线图片压缩工具 - 免费批量压缩JPG/PNG图片 | TinyImg</title>
-    <meta name="description" content="免费在线图片压缩工具，支持JPG、PNG、WebP格式批量压缩，无需上传服务器，保护隐私。压缩率高达80%，一键压缩下载。">
-    <meta name="keywords" content="图片压缩,在线压缩,JPG压缩,PNG压缩,批量压缩,免费图片压缩">
+    <title>Image Compressor - Free Online JPG/PNG/WebP Compression | TinyImg</title>
+    <meta name="description" content="Free online image compressor. Compress JPG, PNG, WebP images in bulk without uploading to any server. Your images stay on your device.">
+    <meta name="keywords" content="image compressor, compress images online, JPG compression, PNG compression, WebP compression, batch compress, free image compressor">
     <meta name="robots" content="index, follow">
-    <link rel="canonical" href="https://your-domain.com/">
+    <link rel="canonical" href="https://tinyimg.cc/">
 
     <!-- Open Graph -->
-    <meta property="og:title" content="在线图片压缩工具 - 免费批量压缩JPG/PNG图片">
-    <meta property="og:description" content="免费在线图片压缩，支持批量处理，无需上传服务器，保护你的隐私。">
+    <meta property="og:title" content="Image Compressor - Free Online JPG/PNG/WebP Compression">
+    <meta property="og:description" content="Free online image compression — all processing done locally in your browser. No uploads, no signup, completely private.">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://your-domain.com/">
+    <meta property="og:url" content="https://tinyimg.cc/">
 
-    <!-- 结构化数据 -->
+    <!-- Structured Data -->
     <script type="application/ld+json">
     {
         "@context": "https://schema.org",
         "@type": "WebApplication",
-        "name": "TinyImg 在线图片压缩",
-        "url": "https://your-domain.com/",
-        "description": "免费在线图片压缩工具，支持JPG、PNG、WebP格式批量压缩",
+        "name": "TinyImg Image Compressor",
+        "url": "https://tinyimg.cc/",
+        "description": "Free online image compressor — compress JPG, PNG, WebP images locally in your browser",
         "applicationCategory": "MultimediaApplication",
         "operatingSystem": "Web Browser",
         "offers": {
             "@type": "Offer",
             "price": "0",
-            "priceCurrency": "CNY"
+            "priceCurrency": "USD"
         }
     }
     </script>
@@ -49,10 +49,10 @@
         }
     </script>
 
-    <!-- JSZip 用于批量下载 -->
+    <!-- JSZip for batch download -->
     <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
 
-    <!-- Google Analytics 占位（替换为你的 GA ID） -->
+    <!-- Google Analytics (replace with your GA ID) -->
     <!-- <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
@@ -71,64 +71,64 @@
 </head>
 <body class="bg-gray-50 min-h-screen">
 
-    <!-- 顶部导航 -->
+    <!-- Navbar -->
     <nav class="bg-white shadow-sm border-b border-gray-100">
         <div class="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between">
             <div class="flex items-center gap-2">
                 <span class="text-2xl">🗜️</span>
                 <span class="text-xl font-bold text-gray-800">TinyImg</span>
             </div>
-            <div class="text-sm text-gray-500">免费 · 无需注册 · 本地处理</div>
+            <div class="text-sm text-gray-500">Free · No Signup · Local Processing</div>
         </div>
     </nav>
 
-    <!-- 主内容 -->
+    <!-- Main -->
     <main class="max-w-5xl mx-auto px-4 py-8">
 
-        <!-- 标题区 -->
+        <!-- Hero -->
         <div class="text-center mb-8">
-            <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-3">在线图片压缩工具</h1>
-            <p class="text-gray-600 text-lg">免费批量压缩 JPG / PNG / WebP 图片，<strong>所有处理在浏览器本地完成</strong>，不上传任何服务器</p>
+            <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-3">Online Image Compressor</h1>
+            <p class="text-gray-600 text-lg">Compress JPG / PNG / WebP images in bulk. <strong>Everything runs locally in your browser.</strong> No uploads. No servers.</p>
         </div>
 
-        <!-- 广告位 1 -->
+        <!-- Ad slot 1 -->
         <div id="ad-top" class="mb-6 min-h-[90px] flex items-center justify-center text-gray-300 text-sm rounded-lg border border-dashed border-gray-200">
-            <!-- 替换为 Google AdSense 代码 -->
+            <!-- Replace with Google AdSense code -->
         </div>
 
-        <!-- 控制面板 -->
+        <!-- Controls -->
         <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 mb-6">
             <div class="flex flex-col md:flex-row items-center gap-6">
-                <!-- 质量滑块 -->
+                <!-- Quality slider -->
                 <div class="flex-1 w-full">
                     <div class="flex justify-between items-center mb-2">
-                        <label class="text-sm font-medium text-gray-700">压缩质量</label>
+                        <label class="text-sm font-medium text-gray-700">Quality</label>
                         <span id="qualityValue" class="text-sm font-bold text-brand-600 bg-brand-50 px-2 py-0.5 rounded">80%</span>
                     </div>
                     <input type="range" id="quality" min="10" max="100" value="80"
                         class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-brand-600">
                     <div class="flex justify-between text-xs text-gray-400 mt-1">
-                        <span>最小体积</span>
-                        <span>最佳质量</span>
+                        <span>Smaller file</span>
+                        <span>Higher quality</span>
                     </div>
                 </div>
 
-                <!-- 输出格式 -->
+                <!-- Output format -->
                 <div class="flex-shrink-0">
-                    <label class="text-sm font-medium text-gray-700 block mb-2">输出格式</label>
+                    <label class="text-sm font-medium text-gray-700 block mb-2">Format</label>
                     <select id="outputFormat" class="border border-gray-200 rounded-lg px-3 py-2 text-sm bg-white focus:ring-2 focus:ring-brand-500 focus:border-brand-500">
-                        <option value="auto">自动（保持原格式）</option>
+                        <option value="auto">Auto (keep original)</option>
                         <option value="image/jpeg">JPG</option>
                         <option value="image/png">PNG</option>
                         <option value="image/webp">WebP</option>
                     </select>
                 </div>
 
-                <!-- 最大宽度 -->
+                <!-- Max width -->
                 <div class="flex-shrink-0">
-                    <label class="text-sm font-medium text-gray-700 block mb-2">最大宽度</label>
+                    <label class="text-sm font-medium text-gray-700 block mb-2">Max Width</label>
                     <select id="maxWidth" class="border border-gray-200 rounded-lg px-3 py-2 text-sm bg-white focus:ring-2 focus:ring-brand-500 focus:border-brand-500">
-                        <option value="0">不缩放</option>
+                        <option value="0">No resize</option>
                         <option value="1920">1920px</option>
                         <option value="1280">1280px</option>
                         <option value="800">800px</option>
@@ -138,107 +138,107 @@
             </div>
         </div>
 
-        <!-- 拖拽上传区 -->
+        <!-- Drop zone -->
         <div id="dropZone" class="drop-zone bg-white rounded-xl shadow-sm border-2 border-dashed border-gray-200 p-12 text-center cursor-pointer hover:border-brand-400 hover:bg-brand-50/30 mb-6">
             <div class="text-5xl mb-4">📁</div>
-            <p class="text-lg font-medium text-gray-700 mb-2">拖拽图片到这里，或点击选择文件</p>
-            <p class="text-sm text-gray-400">支持 JPG、PNG、WebP、GIF 格式，单次最多 20 张</p>
+            <p class="text-lg font-medium text-gray-700 mb-2">Drop images here, or click to select</p>
+            <p class="text-sm text-gray-400">Supports JPG, PNG, WebP, GIF · Up to 20 images at once</p>
             <input type="file" id="fileInput" multiple accept="image/*" class="hidden">
         </div>
 
-        <!-- 操作按钮 -->
+        <!-- Action buttons -->
         <div id="actionBar" class="hidden flex flex-col sm:flex-row gap-3 mb-6 fade-in">
             <button id="compressBtn" onclick="compressAll()"
                 class="flex-1 bg-brand-600 hover:bg-brand-700 text-white font-medium py-3 px-6 rounded-lg transition-colors flex items-center justify-center gap-2">
-                <span>🗜️</span> 开始压缩
+                <span>🗜️</span> Compress
             </button>
             <button id="downloadAllBtn" onclick="downloadAll()" disabled
                 class="flex-1 bg-green-600 hover:bg-green-700 disabled:bg-gray-300 disabled:cursor-not-allowed text-white font-medium py-3 px-6 rounded-lg transition-colors flex items-center justify-center gap-2">
-                <span>📦</span> 全部下载 (ZIP)
+                <span>📦</span> Download All (ZIP)
             </button>
             <button onclick="clearAll()"
                 class="px-6 py-3 border border-gray-200 text-gray-600 hover:bg-gray-50 rounded-lg transition-colors">
-                🗑️ 清空
+                🗑️ Clear
             </button>
         </div>
 
-        <!-- 统计信息 -->
+        <!-- Stats -->
         <div id="stats" class="hidden bg-white rounded-xl shadow-sm border border-gray-100 p-4 mb-6 fade-in">
             <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
                 <div>
                     <div class="text-2xl font-bold text-gray-800" id="statCount">0</div>
-                    <div class="text-xs text-gray-500">图片数量</div>
+                    <div class="text-xs text-gray-500">Images</div>
                 </div>
                 <div>
                     <div class="text-2xl font-bold text-gray-800" id="statOriginal">0 KB</div>
-                    <div class="text-xs text-gray-500">原始大小</div>
+                    <div class="text-xs text-gray-500">Original size</div>
                 </div>
                 <div>
-                    <div class="text-2xl font-bold text-green-600" id="statCompressed">—</div>
-                    <div class="text-xs text-gray-500">压缩后大小</div>
+                    <div class="text-2xl font-bold text-green-600" id="statCompressed">&mdash;</div>
+                    <div class="text-xs text-gray-500">Compressed size</div>
                 </div>
                 <div>
-                    <div class="text-2xl font-bold text-brand-600" id="statSaving">—</div>
-                    <div class="text-xs text-gray-500">节省空间</div>
+                    <div class="text-2xl font-bold text-brand-600" id="statSaving">&mdash;</div>
+                    <div class="text-xs text-gray-500">Space saved</div>
                 </div>
             </div>
         </div>
 
-        <!-- 图片列表 -->
+        <!-- Image list -->
         <div id="imageList" class="space-y-4"></div>
 
-        <!-- 广告位 2 -->
+        <!-- Ad slot 2 -->
         <div id="ad-bottom" class="mt-8 min-h-[90px] flex items-center justify-center text-gray-300 text-sm rounded-lg border border-dashed border-gray-200">
-            <!-- 替换为 Google AdSense 代码 -->
+            <!-- Replace with Google AdSense code -->
         </div>
 
     </main>
 
-    <!-- 底部 -->
+    <!-- Footer -->
     <footer class="bg-white border-t border-gray-100 mt-12 py-8">
         <div class="max-w-5xl mx-auto px-4">
             <div class="grid md:grid-cols-3 gap-8 mb-8">
                 <div>
                     <h3 class="font-bold text-gray-800 mb-3">🗜️ TinyImg</h3>
-                    <p class="text-sm text-gray-500">免费在线图片压缩工具。所有图片处理均在您的浏览器中完成，不会上传到任何服务器，完全保护您的隐私。</p>
+                    <p class="text-sm text-gray-500">Free online image compressor. All processing happens locally in your browser. Nothing is ever uploaded to any server. Your images stay private.</p>
                 </div>
                 <div>
-                    <h3 class="font-bold text-gray-800 mb-3">功能特点</h3>
+                    <h3 class="font-bold text-gray-800 mb-3">Features</h3>
                     <ul class="text-sm text-gray-500 space-y-1">
-                        <li>✅ 支持 JPG / PNG / WebP 格式</li>
-                        <li>✅ 批量压缩，一次最多 20 张</li>
-                        <li>✅ 自定义压缩质量和输出格式</li>
-                        <li>✅ 本地处理，不上传服务器</li>
-                        <li>✅ 支持缩放图片尺寸</li>
+                        <li>✅ JPG / PNG / WebP support</li>
+                        <li>✅ Batch compress up to 20 images</li>
+                        <li>✅ Custom quality and format</li>
+                        <li>✅ Local processing, no uploads</li>
+                        <li>✅ Optional image resizing</li>
                     </ul>
                 </div>
                 <div>
-                    <h3 class="font-bold text-gray-800 mb-3">常见问题</h3>
+                    <h3 class="font-bold text-gray-800 mb-3">FAQ</h3>
                     <ul class="text-sm text-gray-500 space-y-1">
-                        <li><strong>Q:</strong> 图片会上传到哪里？</li>
-                        <li><strong>A:</strong> 不会！所有处理在浏览器本地完成。</li>
-                        <li><strong>Q:</strong> 有数量限制吗？</li>
-                        <li><strong>A:</strong> 单次最多 20 张，不限次数。</li>
+                        <li><strong>Q:</strong> Where do my images go?</li>
+                        <li><strong>A:</strong> Nowhere. Everything stays on your device.</li>
+                        <li><strong>Q:</strong> Is there a limit?</li>
+                        <li><strong>A:</strong> Up to 20 per batch, unlimited batches.</li>
                     </ul>
                 </div>
             </div>
             <div class="text-center text-sm text-gray-400 pt-6 border-t border-gray-100">
-                <p class="mb-2">© 2026 TinyImg · 免费图片压缩工具</p>
+                <p class="mb-2">&copy; 2026 TinyImg · Free Online Image Compressor</p>
                 <p class="space-x-4">
-                    <a href="privacy.html" class="hover:text-blue-600 transition-colors">隐私政策</a>
+                    <a href="privacy.html" class="hover:text-blue-600 transition-colors">Privacy Policy</a>
                     <span>·</span>
-                    <a href="about.html" class="hover:text-blue-600 transition-colors">关于我们</a>
+                    <a href="about.html" class="hover:text-blue-600 transition-colors">About</a>
                 </p>
             </div>
         </div>
     </footer>
 
     <script>
-    // ========== 全局状态 ==========
+    // ========== State ==========
     const images = [];
     let compressedResults = [];
 
-    // ========== DOM 元素 ==========
+    // ========== DOM elements ==========
     const dropZone = document.getElementById('dropZone');
     const fileInput = document.getElementById('fileInput');
     const quality = document.getElementById('quality');
@@ -247,11 +247,11 @@
     const stats = document.getElementById('stats');
     const imageList = document.getElementById('imageList');
 
-    // ========== 事件绑定 ==========
+    // ========== Events ==========
     dropZone.addEventListener('click', () => fileInput.click());
     fileInput.addEventListener('change', (e) => handleFiles(e.target.files));
 
-    // 拖拽
+    // Drag & drop
     dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.classList.add('dragover'); });
     dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
     dropZone.addEventListener('drop', (e) => {
@@ -260,20 +260,20 @@
         handleFiles(e.dataTransfer.files);
     });
 
-    // 质量滑块
+    // Quality slider
     quality.addEventListener('input', (e) => {
         qualityValue.textContent = e.target.value + '%';
     });
 
-    // ========== 文件处理 ==========
+    // ========== File handling ==========
     function handleFiles(files) {
         const validFiles = Array.from(files).filter(f => f.type.startsWith('image/'));
         if (validFiles.length === 0) {
-            alert('请选择图片文件（JPG、PNG、WebP）');
+            alert('Please select image files (JPG, PNG, WebP).');
             return;
         }
         if (images.length + validFiles.length > 20) {
-            alert('单次最多处理 20 张图片，当前已有 ' + images.length + ' 张');
+            alert('Maximum 20 images per batch. You already have ' + images.length + '.');
             return;
         }
 
@@ -299,7 +299,7 @@
         fileInput.value = '';
     }
 
-    // ========== 压缩核心 ==========
+    // ========== Compression engine ==========
     function compressImage(imgData, qualityVal, outputFormat, maxWidth) {
         return new Promise((resolve) => {
             const img = new Image();
@@ -307,7 +307,7 @@
                 const canvas = document.createElement('canvas');
                 let { width, height } = img;
 
-                // 缩放
+                // Resize
                 if (maxWidth > 0 && width > maxWidth) {
                     height = Math.round(height * (maxWidth / width));
                     width = maxWidth;
@@ -319,9 +319,9 @@
                 const ctx = canvas.getContext('2d');
                 ctx.drawImage(img, 0, 0, width, height);
 
-                // 确定输出格式
+                // Determine output format
                 let mime = outputFormat === 'auto' ? (imgData.type || 'image/jpeg') : outputFormat;
-                if (mime === 'image/gif') mime = 'image/png'; // GIF 转 PNG
+                if (mime === 'image/gif') mime = 'image/png'; // GIF → PNG
 
                 canvas.toBlob((blob) => {
                     resolve({
@@ -342,7 +342,7 @@
         const btn = document.getElementById('compressBtn');
 
         btn.disabled = true;
-        btn.innerHTML = '<span class="animate-spin">⏳</span> 压缩中...';
+        btn.innerHTML = '<span class="animate-spin">⏳</span> Compressing...';
 
         compressedResults = [];
         let totalOriginal = 0;
@@ -360,27 +360,23 @@
                 compressedResults.push(result);
                 totalCompressed += result.size;
             } catch (err) {
-                console.error('压缩失败:', img.name, err);
+                console.error('Compression failed:', img.name, err);
                 img.compressedSize = img.originalSize;
                 totalCompressed += img.originalSize;
             }
 
-            // 更新进度
-            btn.innerHTML = `<span class="animate-spin">⏳</span> 压缩中... (${i + 1}/${images.length})`;
+            btn.innerHTML = `<span class="animate-spin">⏳</span> Compressing... (${i + 1}/${images.length})`;
             renderImageList();
         }
 
         btn.disabled = false;
-        btn.innerHTML = '<span>🗜️</span> 重新压缩';
+        btn.innerHTML = '<span>🗜️</span> Compress Again';
 
-        // 更新统计
         updateStats(totalOriginal, totalCompressed);
-
-        // 启用下载按钮
         document.getElementById('downloadAllBtn').disabled = false;
     }
 
-    // ========== 统计 ==========
+    // ========== Stats ==========
     function updateStats(original, compressed) {
         stats.classList.remove('hidden');
         document.getElementById('statCount').textContent = images.length;
@@ -397,7 +393,7 @@
         return (bytes / (1024 * 1024)).toFixed(2) + ' MB';
     }
 
-    // ========== 渲染列表 ==========
+    // ========== Render ==========
     function renderImageList() {
         imageList.innerHTML = images.map(img => {
             const hasResult = img.compressedUrl;
@@ -407,44 +403,44 @@
             return `
             <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-4 fade-in">
                 <div class="flex flex-col md:flex-row gap-4">
-                    <!-- 原图 -->
+                    <!-- Original -->
                     <div class="flex-1">
-                        <div class="text-xs font-medium text-gray-400 mb-1">原图 · ${formatSize(img.originalSize)}</div>
+                        <div class="text-xs font-medium text-gray-400 mb-1">Original · ${formatSize(img.originalSize)}</div>
                         <div class="rounded-lg overflow-hidden bg-gray-50 border border-gray-100">
                             <img src="${img.originalUrl}" alt="${img.name}" class="w-full h-40 object-contain">
                         </div>
                     </div>
-                    <!-- 压缩后 -->
+                    <!-- Compressed -->
                     <div class="flex-1">
                         <div class="text-xs font-medium text-gray-400 mb-1">
-                            ${hasResult ? `压缩后 · ${formatSize(img.compressedSize)} · <span class="${savingColor}">节省 ${saving}%</span>` : '等待压缩...'}
+                            ${hasResult ? `Compressed · ${formatSize(img.compressedSize)} · <span class="${savingColor}">Saved ${saving}%</span>` : 'Waiting...'}
                         </div>
                         <div class="rounded-lg overflow-hidden bg-gray-50 border border-gray-100">
                             ${hasResult
                                 ? `<img src="${img.compressedUrl}" alt="compressed" class="w-full h-40 object-contain">`
-                                : `<div class="w-full h-40 flex items-center justify-center text-gray-300">待压缩</div>`
+                                : `<div class="w-full h-40 flex items-center justify-center text-gray-300">Pending</div>`
                             }
                         </div>
                     </div>
                 </div>
-                <!-- 文件名和操作 -->
+                <!-- Filename & actions -->
                 <div class="flex items-center justify-between mt-3 pt-3 border-t border-gray-50">
                     <div class="text-sm text-gray-600 truncate max-w-[60%]" title="${img.name}">📄 ${img.name}</div>
                     <div class="flex gap-2">
                         ${hasResult ? `
                             <button onclick="downloadOne('${img.id}')"
                                 class="text-sm bg-green-50 hover:bg-green-100 text-green-700 px-3 py-1 rounded-lg transition-colors">
-                                ⬇️ 下载
+                                ⬇️ Download
                             </button>
                         ` : ''}
                         <button onclick="removeImage('${img.id}')"
                             class="text-sm bg-gray-50 hover:bg-gray-100 text-gray-500 px-3 py-1 rounded-lg transition-colors">
-                            ✕ 移除
+                            ✕ Remove
                         </button>
                     </div>
                 </div>
                 ${hasResult ? `
-                <!-- 压缩进度条 -->
+                <!-- Progress bar -->
                 <div class="mt-2">
                     <div class="h-1.5 bg-gray-100 rounded-full overflow-hidden">
                         <div class="progress-bar h-full rounded-full ${saving > 0 ? 'bg-green-500' : 'bg-red-400'}"
@@ -461,7 +457,7 @@
         stats.classList.remove('hidden');
     }
 
-    // ========== 下载 ==========
+    // ========== Download ==========
     function downloadOne(id) {
         const img = images.find(i => i.id === id);
         if (!img || !img.compressedUrl) return;
@@ -495,7 +491,7 @@
         a.click();
     }
 
-    // ========== 移除/清空 ==========
+    // ========== Remove / Clear ==========
     function removeImage(id) {
         const idx = images.findIndex(i => i.id === id);
         if (idx > -1) {
