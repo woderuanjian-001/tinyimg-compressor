@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Google AdSense -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1325551504808613" crossorigin="anonymous"></script>
+
+    <!-- SEO -->
+    <title>Merge PDF - Free Online PDF Merger | TinyImg</title>
+    <meta name="description" content="Merge multiple PDF files into one document online for free. All processing happens locally in your browser — no file uploads required.">
+    <meta name="keywords" content="merge pdf, combine pdf, pdf merger, merge pdf files, free pdf merger, online pdf combiner">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://tinyimg.cc/merge-pdf.html">
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="Merge PDF - Free Online PDF Combiner | TinyImg">
+    <meta property="og:description" content="Combine multiple PDFs into one document directly in your browser. No uploads, no signup, completely private.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://tinyimg.cc/merge-pdf.html">
+
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "TinyImg PDF Merger",
+        "url": "https://tinyimg.cc/merge-pdf.html",
+        "description": "Free online PDF merger — combine multiple PDF files into one locally in your browser",
+        "applicationCategory": "MultimediaApplication",
+        "operatingSystem": "Web Browser",
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+        }
+    }
+    </script>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: { 50: '#eff6ff', 100: '#dbeafe', 500: '#3b82f6', 600: '#2563eb', 700: '#1d4ed8' }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- pdf-lib for PDF manipulation -->
+    <script src="https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+
+    <style>
+        .drop-zone { transition: all 0.3s ease; }
+        .drop-zone.dragover { border-color: #3b82f6; background: #eff6ff; transform: scale(1.01); }
+        .fade-in { animation: fadeIn 0.4s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .sortable-drag { opacity: 0.8; transform: rotate(1deg); box-shadow: 0 10px 30px rgba(0,0,0,0.15); }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+
+    <!-- Navbar -->
+    <nav class="bg-white shadow-sm border-b border-gray-100 sticky top-0 z-50">
+        <div class="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between flex-wrap gap-2">
+            <a href="./" class="flex items-center gap-2 no-underline">
+                <span class="text-2xl">🗜️</span>
+                <span class="text-xl font-bold text-gray-800">TinyImg</span>
+            </a>
+            <div class="flex items-center gap-1 text-sm flex-wrap">
+                <a href="./" class="px-3 py-1.5 rounded-lg text-gray-500 hover:text-blue-600 hover:bg-blue-50 transition-colors">Image Compress</a>
+                <a href="./image-to-pdf.html" class="px-3 py-1.5 rounded-lg text-gray-500 hover:text-blue-600 hover:bg-blue-50 transition-colors">Image to PDF</a>
+                <a href="./merge-pdf.html" class="px-3 py-1.5 rounded-lg text-blue-600 bg-blue-50 font-medium transition-colors">Merge PDF</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main -->
+    <main class="max-w-5xl mx-auto px-4 py-8">
+
+        <!-- Hero -->
+        <div class="text-center mb-8">
+            <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-3">Merge PDF Files</h1>
+            <p class="text-gray-600 text-lg">Combine multiple PDFs into one document. <strong>Everything runs locally in your browser.</strong> No uploads.</p>
+        </div>
+
+        <!-- Ad slot 1 -->
+        <div class="mb-6 min-h-[90px] flex items-center justify-center text-gray-300 text-sm rounded-lg border border-dashed border-gray-200">
+            <!-- AdSense ad unit -->
+        </div>
+
+        <!-- Drop zone -->
+        <div id="dropZone" class="drop-zone bg-white rounded-xl shadow-sm border-2 border-dashed border-gray-200 p-12 text-center cursor-pointer hover:border-brand-400 hover:bg-brand-50/30 mb-6">
+            <div class="text-5xl mb-4">📑</div>
+            <p class="text-lg font-medium text-gray-700 mb-2">Drop PDF files here, or click to select</p>
+            <p class="text-sm text-gray-400">Supports PDF files · Drag to reorder after adding</p>
+            <input type="file" id="fileInput" multiple accept=".pdf,application/pdf" class="hidden">
+        </div>
+
+        <!-- Action buttons -->
+        <div id="actionBar" class="hidden flex flex-col sm:flex-row gap-3 mb-6 fade-in">
+            <button id="mergeBtn" onclick="mergePDFs()"
+                class="flex-1 bg-brand-600 hover:bg-brand-700 text-white font-medium py-3 px-6 rounded-lg transition-colors flex items-center justify-center gap-2">
+                <span>🔗</span> Merge PDFs
+            </button>
+            <button onclick="clearAll()"
+                class="px-6 py-3 border border-gray-200 text-gray-600 hover:bg-gray-50 rounded-lg transition-colors">
+                🗑️ Clear All
+            </button>
+        </div>
+
+        <!-- Stats -->
+        <div id="stats" class="hidden bg-white rounded-xl shadow-sm border border-gray-100 p-4 mb-6 fade-in">
+            <div class="grid grid-cols-3 gap-4 text-center">
+                <div>
+                    <div class="text-2xl font-bold text-gray-800" id="statCount">0</div>
+                    <div class="text-xs text-gray-500">PDF Files</div>
+                </div>
+                <div>
+                    <div class="text-2xl font-bold text-gray-800" id="statPages">0</div>
+                    <div class="text-xs text-gray-500">Total Pages</div>
+                </div>
+                <div>
+                    <div class="text-2xl font-bold text-gray-800" id="statSize">0 KB</div>
+                    <div class="text-xs text-gray-500">Total Size</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PDF list -->
+        <div id="pdfList" class="space-y-3"></div>
+
+        <!-- Ad slot 2 -->
+        <div class="mt-8 min-h-[90px] flex items-center justify-center text-gray-300 text-sm rounded-lg border border-dashed border-gray-200">
+            <!-- AdSense ad unit -->
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-gray-100 mt-12 py-8">
+        <div class="max-w-5xl mx-auto px-4">
+            <div class="grid md:grid-cols-3 gap-8 mb-8">
+                <div>
+                    <h3 class="font-bold text-gray-800 mb-3">🗜️ TinyImg</h3>
+                    <p class="text-sm text-gray-500">Free online file tools. All processing happens locally in your browser. Nothing is ever uploaded to any server.</p>
+                </div>
+                <div>
+                    <h3 class="font-bold text-gray-800 mb-3">Tools</h3>
+                    <ul class="text-sm text-gray-500 space-y-1">
+                        <li>✅ <a href="./" class="hover:text-blue-600">Image Compressor</a></li>
+                        <li>✅ <a href="./image-to-pdf.html" class="hover:text-blue-600">Image to PDF</a></li>
+                        <li>✅ <a href="./merge-pdf.html" class="text-blue-600 font-medium">Merge PDF</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="font-bold text-gray-800 mb-3">FAQ</h3>
+                    <ul class="text-sm text-gray-500 space-y-1">
+                        <li><strong>Q:</strong> Is my data secure?</li>
+                        <li><strong>A:</strong> Yes, all processing is local. Files never leave your device.</li>
+                        <li><strong>Q:</strong> Any file size limit?</li>
+                        <li><strong>A:</strong> Large files may be slower, but there is no hard limit.</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="text-center text-sm text-gray-400 pt-6 border-t border-gray-100">
+                <p class="mb-2">&copy; 2026 TinyImg · Free Online PDF Tools</p>
+                <p class="space-x-4">
+                    <a href="./privacy.html" class="hover:text-blue-600 transition-colors">Privacy Policy</a>
+                    <span>·</span>
+                    <a href="./about.html" class="hover:text-blue-600 transition-colors">About</a>
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+    // ========== State ==========
+    const pdfs = [];
+    let dragIndex = -1;
+
+    // ========== DOM elements ==========
+    const dropZone = document.getElementById('dropZone');
+    const fileInput = document.getElementById('fileInput');
+    const actionBar = document.getElementById('actionBar');
+    const stats = document.getElementById('stats');
+    const pdfList = document.getElementById('pdfList');
+
+    // ========== Events ==========
+    dropZone.addEventListener('click', () => fileInput.click());
+    fileInput.addEventListener('change', (e) => handleFiles(e.target.files));
+
+    // Drag & drop from OS
+    dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.classList.add('dragover'); });
+    dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
+    dropZone.addEventListener('drop', (e) => {
+        e.preventDefault();
+        dropZone.classList.remove('dragover');
+        handleFiles(e.dataTransfer.files);
+    });
+
+    // ========== File handling ==========
+    function handleFiles(files) {
+        const validFiles = Array.from(files).filter(f =>
+            f.type === 'application/pdf' || f.name.toLowerCase().endsWith('.pdf')
+        );
+        if (validFiles.length === 0) {
+            alert('Please select PDF files only.');
+            return;
+        }
+
+        validFiles.forEach(file => {
+            const id = Date.now() + Math.random().toString(36).slice(2, 8);
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                pdfs.push({
+                    id,
+                    name: file.name,
+                    size: file.size,
+                    data: new Uint8Array(e.target.result),
+                    pages: 0, // Will be filled during merge
+                });
+                // Count pages asynchronously
+                countPages(pdfs[pdfs.length - 1]);
+                renderList();
+                showControls();
+            };
+            reader.readAsArrayBuffer(file);
+        });
+
+        fileInput.value = '';
+    }
+
+    // Count pages in a PDF (async, updates UI when done)
+    async function countPages(pdfEntry) {
+        try {
+            const { PDFDocument } = PDFLib;
+            const doc = await PDFDocument.load(pdfEntry.data, { ignoreEncryption: true });
+            pdfEntry.pages = doc.getPageCount();
+        } catch (e) {
+            console.error('Failed to read PDF:', pdfEntry.name, e);
+            pdfEntry.pages = '?';
+            pdfEntry.error = true;
+        }
+        renderList();
+        updateStats();
+    }
+
+    // ========== Render ==========
+    function renderList() {
+        pdfList.innerHTML = pdfs.map((pdf, idx) => {
+            const pageDisplay = pdf.pages === 0 ? 'Reading...' : pdf.pages === '?' ? 'Error' : pdf.pages + ' page' + (pdf.pages !== 1 ? 's' : '');
+            const errorClass = pdf.error ? 'border-red-200 bg-red-50/30' : '';
+            return `
+            <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-4 fade-in cursor-grab active:cursor-grabbing ${errorClass}"
+                 draggable="true"
+                 data-index="${idx}"
+                 ondragstart="handleDragStart(event, ${idx})"
+                 ondragover="handleDragOver(event)"
+                 ondragenter="handleDragEnter(event)"
+                 ondragleave="handleDragLeave(event)"
+                 ondrop="handleDrop(event, ${idx})"
+                 ondragend="handleDragEnd(event)">
+                <div class="flex items-center gap-4">
+                    <div class="flex-shrink-0 text-gray-300 text-lg font-bold w-8 text-center">${idx + 1}</div>
+                    <div class="flex-shrink-0 w-12 h-12 rounded-lg bg-red-50 flex items-center justify-center">
+                        <span class="text-red-400 text-xl">📄</span>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <div class="text-sm font-medium text-gray-700 truncate" title="${pdf.name}">${pdf.name}</div>
+                        <div class="text-xs text-gray-400">${pageDisplay} · ${formatSize(pdf.size)}</div>
+                        ${pdf.error ? '<div class="text-xs text-red-500 mt-1">⚠️ This PDF may be encrypted or corrupted</div>' : ''}
+                    </div>
+                    <div class="flex items-center gap-1">
+                        <button onclick="moveUp(${idx})" ${idx === 0 ? 'disabled' : ''}
+                            class="text-gray-300 hover:text-gray-600 disabled:opacity-20 p-1" title="Move up">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"/></svg>
+                        </button>
+                        <button onclick="moveDown(${idx})" ${idx === pdfs.length - 1 ? 'disabled' : ''}
+                            class="text-gray-300 hover:text-gray-600 disabled:opacity-20 p-1" title="Move down">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                        </button>
+                        <button onclick="removePdf(${idx})"
+                            class="text-gray-300 hover:text-red-500 p-1 ml-2" title="Remove">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                        </button>
+                    </div>
+                </div>
+            </div>`;
+        }).join('');
+    }
+
+    function showControls() {
+        actionBar.classList.remove('hidden');
+        stats.classList.remove('hidden');
+        updateStats();
+    }
+
+    function updateStats() {
+        document.getElementById('statCount').textContent = pdfs.length;
+        const totalPages = pdfs.reduce((sum, p) => sum + (typeof p.pages === 'number' ? p.pages : 0), 0);
+        document.getElementById('statPages').textContent = totalPages || '...';
+        const totalSize = pdfs.reduce((sum, p) => sum + p.size, 0);
+        document.getElementById('statSize').textContent = formatSize(totalSize);
+    }
+
+    function formatSize(bytes) {
+        if (bytes < 1024) return bytes + ' B';
+        if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+        return (bytes / (1024 * 1024)).toFixed(2) + ' MB';
+    }
+
+    // ========== Reorder ==========
+    function moveUp(idx) {
+        if (idx <= 0) return;
+        [pdfs[idx - 1], pdfs[idx]] = [pdfs[idx], pdfs[idx - 1]];
+        renderList();
+    }
+
+    function moveDown(idx) {
+        if (idx >= pdfs.length - 1) return;
+        [pdfs[idx], pdfs[idx + 1]] = [pdfs[idx + 1], pdfs[idx]];
+        renderList();
+    }
+
+    function removePdf(idx) {
+        pdfs.splice(idx, 1);
+        renderList();
+        updateStats();
+        if (pdfs.length === 0) clearAll();
+    }
+
+    // Drag-to-reorder
+    function handleDragStart(e, idx) {
+        dragIndex = idx;
+        e.target.classList.add('sortable-drag');
+        e.dataTransfer.effectAllowed = 'move';
+        e.dataTransfer.setData('text/plain', idx);
+    }
+
+    function handleDragOver(e) {
+        e.preventDefault();
+        e.dataTransfer.dropEffect = 'move';
+    }
+
+    function handleDragEnter(e) {
+        e.preventDefault();
+        e.target.closest('.bg-white')?.classList.add('bg-blue-50');
+    }
+
+    function handleDragLeave(e) {
+        e.target.closest('.bg-white')?.classList.remove('bg-blue-50');
+    }
+
+    function handleDrop(e, dropIdx) {
+        e.preventDefault();
+        e.target.closest('.bg-white')?.classList.remove('bg-blue-50');
+        if (dragIndex === -1 || dragIndex === dropIdx) return;
+        const [moved] = pdfs.splice(dragIndex, 1);
+        pdfs.splice(dropIdx, 0, moved);
+        dragIndex = -1;
+        renderList();
+        updateStats();
+    }
+
+    function handleDragEnd(e) {
+        e.target.classList.remove('sortable-drag');
+        document.querySelectorAll('.bg-blue-50').forEach(el => el.classList.remove('bg-blue-50'));
+        dragIndex = -1;
+    }
+
+    // ========== Merge PDFs ==========
+    async function mergePDFs() {
+        // Filter out error PDFs
+        const validPdfs = pdfs.filter(p => !p.error);
+        if (validPdfs.length === 0) {
+            alert('No readable PDF files to merge. Please check your files.');
+            return;
+        }
+        if (validPdfs.length === 1) {
+            alert('Please add at least 2 PDF files to merge.');
+            return;
+        }
+
+        const btn = document.getElementById('mergeBtn');
+        btn.disabled = true;
+        btn.innerHTML = '<span class="animate-spin">⏳</span> Merging PDFs...';
+
+        try {
+            const { PDFDocument } = PDFLib;
+
+            // Create a new empty PDF document
+            const mergedDoc = await PDFDocument.create();
+
+            for (let i = 0; i < validPdfs.length; i++) {
+                const pdf = validPdfs[i];
+                btn.innerHTML = `<span class="animate-spin">⏳</span> Processing file ${i + 1}/${validPdfs.length}...`;
+
+                let sourceDoc;
+                try {
+                    sourceDoc = await PDFDocument.load(pdf.data, { ignoreEncryption: true });
+                } catch (e) {
+                    console.error('Skipping unreadable PDF:', pdf.name, e);
+                    continue;
+                }
+
+                const pageCount = sourceDoc.getPageCount();
+                const copiedPages = await mergedDoc.copyPages(sourceDoc, sourceDoc.getPageIndices());
+
+                copiedPages.forEach(page => {
+                    mergedDoc.addPage(page);
+                });
+            }
+
+            // Generate merged PDF bytes
+            btn.innerHTML = '<span class="animate-spin">⏳</span> Generating final PDF...';
+            const mergedPdfBytes = await mergedDoc.save();
+
+            // Trigger download
+            const blob = new Blob([mergedPdfBytes], { type: 'application/pdf' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'tinyimg_merged.pdf';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+
+        } catch (err) {
+            console.error('Merge failed:', err);
+            alert('Failed to merge PDFs. One or more files may be corrupted or password-protected. Please try with different files.');
+        }
+
+        btn.disabled = false;
+        btn.innerHTML = '<span>🔗</span> Merge PDFs';
+    }
+
+    // ========== Clear ==========
+    function clearAll() {
+        pdfs.length = 0;
+        pdfList.innerHTML = '';
+        actionBar.classList.add('hidden');
+        stats.classList.add('hidden');
+        document.getElementById('statCount').textContent = '0';
+        document.getElementById('statPages').textContent = '0';
+        document.getElementById('statSize').textContent = '0 KB';
+    }
+    </script>
+
+</body>
+</html>

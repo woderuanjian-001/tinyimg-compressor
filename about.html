@@ -13,16 +13,19 @@
   </style>
 </head>
 <body class="bg-gray-50 text-gray-800">
-  <header class="bg-white shadow-sm">
-    <div class="max-w-4xl mx-auto px-4 py-4 flex items-center justify-between">
-      <a href="./" class="text-xl font-bold text-blue-600">🗜️ TinyImg</a>
-      <nav class="space-x-4 text-sm">
-        <a href="./" class="text-gray-600 hover:text-blue-600">Home</a>
-        <a href="./about.html" class="text-blue-600 font-medium">About</a>
-        <a href="./privacy.html" class="text-gray-600 hover:text-blue-600">Privacy</a>
-      </nav>
+  <nav class="bg-white shadow-sm border-b border-gray-100 sticky top-0 z-50">
+    <div class="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between flex-wrap gap-2">
+      <a href="./" class="flex items-center gap-2 no-underline">
+        <span class="text-2xl">🗜️</span>
+        <span class="text-xl font-bold text-gray-800">TinyImg</span>
+      </a>
+      <div class="flex items-center gap-1 text-sm flex-wrap">
+        <a href="./" class="px-3 py-1.5 rounded-lg text-gray-500 hover:text-blue-600 hover:bg-blue-50 transition-colors">Image Compress</a>
+        <a href="./image-to-pdf.html" class="px-3 py-1.5 rounded-lg text-gray-500 hover:text-blue-600 hover:bg-blue-50 transition-colors">Image to PDF</a>
+        <a href="./merge-pdf.html" class="px-3 py-1.5 rounded-lg text-gray-500 hover:text-blue-600 hover:bg-blue-50 transition-colors">Merge PDF</a>
+      </div>
     </div>
-  </header>
+  </nav>
 
   <main class="max-w-4xl mx-auto px-4 py-12">
     <h1 class="text-3xl font-bold mb-8">About TinyImg</h1>
@@ -62,6 +65,8 @@
           <li><strong>HTML5 Canvas API</strong> — image compression and format conversion</li>
           <li><strong>File API</strong> — local file reading and processing</li>
           <li><strong>JSZip</strong> — batch ZIP packaging for download</li>
+          <li><strong>jsPDF</strong> — client-side PDF generation from images</li>
+          <li><strong>pdf-lib</strong> — PDF merging and manipulation</li>
           <li><strong>Tailwind CSS</strong> — modern, responsive UI styling</li>
         </ul>
         <p class="mt-3 text-sm text-gray-500">No backend. No server. Everything runs in your browser, ensuring both data privacy and instant responsiveness.</p>
